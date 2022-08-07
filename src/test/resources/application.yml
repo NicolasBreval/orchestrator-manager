@@ -9,12 +9,6 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
-      redoc:
-        paths: classpath:META-INF/swagger/views/redoc
-        mapping: /redoc/**
-      rapidoc:
-        paths: classpath:META-INF/swagger/views/rapidoc
-        mapping: /rapidoc/**
 datasources:
   default:
 #    url: jdbc:h2:file:./database.sql

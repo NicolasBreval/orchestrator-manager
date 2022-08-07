@@ -7,10 +7,10 @@ plugins {
     id("io.micronaut.application") version "3.5.1"
 }
 
-version = "0.1"
+version = "0.0.1"
 group = "org.nitb.orchestrator2"
 
-val kotlinVersion=project.properties.get("kotlinVersion")
+val kotlinVersion= project.properties["kotlinVersion"]
 repositories {
     mavenCentral()
 }
@@ -31,12 +31,17 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
     runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("com.h2database:h2")
     compileOnly("org.graalvm.nativeimage:svm")
 
     implementation("io.micronaut:micronaut-validation")
 
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
+
+    runtimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql:42.4.0")
+    runtimeOnly("com.oracle.database.jdbc:ojdbc11:21.6.0.0.1")
+    runtimeOnly("com.microsoft.sqlserver:mssql-jdbc:10.2.1.jre17")
+    runtimeOnly("mysql:mysql-connector-java:8.0.30")
 
 }
 
