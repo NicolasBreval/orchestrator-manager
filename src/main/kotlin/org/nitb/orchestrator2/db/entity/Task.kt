@@ -27,9 +27,8 @@ data class Task(
     @Column(nullable = false)
     var stopped: Boolean = false,
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 50)
-    var type: TaskType = TaskType.TRANSFORMATION
+    @Column(nullable = false, length = 500)
+    var type: String
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

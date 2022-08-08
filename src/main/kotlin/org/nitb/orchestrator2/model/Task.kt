@@ -3,7 +3,6 @@ package org.nitb.orchestrator2.model
 import com.fasterxml.jackson.annotation.JsonFormat
 import org.nitb.orchestrator2.db.entity.TaskHistorical
 import org.nitb.orchestrator2.db.entity.TaskOperation
-import org.nitb.orchestrator2.db.entity.TaskType
 import java.time.LocalDateTime
 
 data class Task(
@@ -14,7 +13,7 @@ data class Task(
     var lastModification: LocalDateTime = LocalDateTime.now(),
     var active: Boolean,
     var stopped: Boolean,
-    var type: TaskType,
+    var type: String,
     var parameters: String
 ) {
     constructor(taskHistorical: TaskHistorical): this(taskHistorical.task!!.name, taskHistorical.task!!.creationDate,

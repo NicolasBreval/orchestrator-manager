@@ -1,5 +1,0 @@
-package org.nitb.orchestrator2.db.entity
-
-enum class TaskType {
-    PRODUCER_CONSUMER, LISTENER_CONSUMER, DETACHED_CYCLICAL, PRODUCER_CYCLICAL, TRANSFORMATION
-}

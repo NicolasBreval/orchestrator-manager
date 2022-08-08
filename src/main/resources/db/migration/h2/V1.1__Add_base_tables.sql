@@ -6,7 +6,7 @@ CREATE TABLE IF NOT EXISTS tasks (
     `last_modification` TIMESTAMP,
     `active` BOOLEAN NOT NULL,
     `stopped` BOOLEAN NOT NULL,
-    `type` VARCHAR(50) NOT NULL,
+    `type` VARCHAR(500) NOT NULL,
     UNIQUE KEY tasks_name_unique_constraint (`name`)
 );
 
