@@ -32,7 +32,7 @@ interface TaskHistoricalRepository: CrudRepository<TaskHistorical, BigDecimal> {
      *
      * @return List of tasks with their last historical filtered by [names].
      */
-    @Query("from task_historicals th where th.task.name = :name and th.id in (select max(th2.id) from task_historicals th2 where th2.task.name in :names)")
+    @Query("from task_historicals th where th.id in (select max(th2.id) from task_historicals th2 where th2.task.name in :names)")
     fun findLastHistoricalByTaskNames(names: List<String>): List<TaskHistorical>
 
     /**
@@ -40,6 +40,6 @@ interface TaskHistoricalRepository: CrudRepository<TaskHistorical, BigDecimal> {
      *
      * @return List with all tasks with their last historical.
      */
-    @Query("from task_historicals th where th.id in (select max(th2.id) from task_historicals th2 group by th2.task where th.task.active = true)")
+    @Query("from task_historicals th where th.id in (select max(th2.id) from task_historicals th2 where th.task.active = true group by th2.task)")
     fun findLastHistoricalByTask(): List<TaskHistorical>
 }
