@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Get
  * Simple controller used to check if server is accessible. This method is normally used by health systems of
  * several http-based solutions, like Consul or Kubernetes, to check if any service is available.
  */
+@Suppress("UNUSED")
 @Controller("/health")
 class HealthController {
 

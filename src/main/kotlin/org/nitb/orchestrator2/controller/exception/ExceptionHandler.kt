@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory
 @Produces
 @Singleton
 @Requires(classes = [Exception::class, ExceptionHandler::class])
+@Suppress("UNUSED")
 class ExceptionHandler(
     @Value("\${orchestrator.exception.show-trace}")
     val showTrace: Boolean
