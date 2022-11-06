@@ -1,35 +1,32 @@
 package org.nitb.orchestrator2.db.entity
 
+import io.micronaut.core.annotation.Introspected
 import org.hibernate.Hibernate
 import java.math.BigDecimal
-import java.time.LocalDateTime
+import java.time.ZonedDateTime
 import javax.persistence.*
 
-@Entity(name = "task_historicals")
+@Introspected
+@Entity
 @Table(name = "task_historicals")
-data class TaskHistorical(
-    @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    var id: BigDecimal? = null,
-
-    @Column(nullable = false)
-    var date: LocalDateTime = LocalDateTime.now(),
-
-    @Column(nullable = false, length = 100)
-    var username: String = "",
-
-    @Lob
-    @Column(nullable = false)
-    var parameters: String = "",
-
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    var operation: TaskOperation? = null,
-
-    @ManyToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-    @JoinColumn(name = "task_id", insertable = true, updatable = false, nullable = false)
-    var task: Task? = null
+data class TaskHistorical (
+        @Lob
+        val parameters: ByteArray,
+        val isOrphan: Boolean,
+        var active: Boolean,
+        var stopped: Boolean,
+        val modificationDate: ZonedDateTime = ZonedDateTime.now(),
+        @ManyToOne(fetch = FetchType.EAGER, cascade = [CascadeType.ALL])
+        @JoinColumn(name = "task_name")
+        @JoinColumn(name = "task_user")
+        val task: Task? = null,
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        val id: BigDecimal? = null,
 ) {
+    fun touch(parameters: ByteArray = this.parameters, isOrphan: Boolean = this.isOrphan, active: Boolean = this.active, stopped: Boolean = this.stopped): TaskHistorical =
+            TaskHistorical(parameters, isOrphan, active, stopped, ZonedDateTime.now(), task)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other == null || Hibernate.getClass(this) != Hibernate.getClass(other)) return false
@@ -42,6 +39,7 @@ data class TaskHistorical(
 
     @Override
     override fun toString(): String {
-        return this::class.simpleName + "(id = $id , date = $date , username = $username , parameters = $parameters , operation = $operation )"
+        return this::class.simpleName + "(id = $id , parameters = $parameters , isOrphan = $isOrphan , active = $active , stopped = $stopped , modificationDate = $modificationDate , task = $task )"
     }
+
 }
