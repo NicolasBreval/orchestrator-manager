@@ -1,5 +1,8 @@
 package org.nitb.orchestrator2.model
 
+import io.micronaut.core.annotation.Introspected
+
+@Introspected
 data class ControllerExceptionMessage (
     var error: String,
     var trace: Array<StackTraceElement> = arrayOf()
