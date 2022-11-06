@@ -1,0 +1,134 @@
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+    :root {
+        --border-color: #EBEEF1;
+        --background-from: #0080FF;
+        --background-to: #CE5DFF;
+        --title-color: #EBEEF1;
+        --item-color: #EBEEF1;
+    }
+
+    .menu-container {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        justify-content: space-between;
+        align-items: center;
+
+        padding-left: 10px;
+        padding-right: 10px;
+
+        height: 50px;
+
+        background: linear-gradient(45deg, var(--background-from), var(--background-to));
+
+        top: 0;
+        left: 0;
+        right: 0;
+    }
+
+    .menu-links {
+        display: flex;
+        flex-direction: row;
+        gap: 20px;
+        justify-content: flex-start;
+        align-items: center;
+    }
+
+    .menu-userinfo {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .menu-userinfo-text {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .user-icon {
+        height: 40px;
+    }
+
+    .menu-item {
+        color: var(--item-color);
+
+        cursor: default;
+    }
+
+    .menu-item:hover {
+        transform: scale(1.2);
+    }
+
+    .menu-item:active {
+        transform: scale(0.5);
+    }
+
+    .menu-item--current {
+        text-decoration: underline;
+        transform: scale(1) !important;
+    }
+
+    .menu-title {
+        font-weight: 700;
+        font-size: 24px;
+
+        color: var(--title-color);
+
+        transition: transform .2s;
+    }
+
+    .vertical-separator {
+        border: 1px solid var(--border-color);
+        height: 20px;
+    }
+
+    .menu-userinfo-modal {
+        position: absolute;
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        right: 0;
+        top: 50px;
+        background: linear-gradient(45deg, var(--background-from), 1%, var(--background-to));
+        padding: 10px;
+        border-bottom-left-radius: 10px;
+    }
+
+    .menu-userinfo-modal--show {
+        display: flex;
+    }
+</style>
+<div class="menu-container">
+    <div class="menu-links">
+        <span class="menu-title">Orchestrator Admin Controller</span>
+        <div class="vertical-separator"></div>
+        <span class="menu-item #if( $page == "home" ) menu-item--current #end" onclick="location.href='/'">Home</span>
+        <div class="vertical-separator"></div>
+        <span class="menu-item #if( $page == "tasks" ) menu-item--current #end" onclick="location.href='/groups'">Task Manager</span>
+    </div>
+    <div class="menu-userinfo">
+        <object type="image/svg+xml" data="/static/svg/user-icon.svg" class="user-icon"></object>
+    </div>
+    <div class="menu-userinfo-modal">
+        <span>$username</span>
+        <span>$role</span>
+    </div>
+</div>
+<script>
+    window.onload = () => {
+        document.querySelector(".menu-userinfo").addEventListener("click", () => {
+            var userInfoModal = document.querySelector(".menu-userinfo-modal");
+            var toggle = userInfoModal.classList.contains("menu-userinfo-modal--show");
+            if (toggle) {
+                userInfoModal.classList.remove("menu-userinfo-modal--show");
+            } else {
+                userInfoModal.classList.add("menu-userinfo-modal--show");
+            }
+        });
+    }
+</script>

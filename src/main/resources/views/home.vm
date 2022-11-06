@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Home</title>
+        <style>
+            :root {
+                --error-color: #dc3545;
+            }
+
+            body {
+                margin: 0;
+
+                font-family: 'Roboto', sans-serif;
+            }
+
+            .auth-error-container {
+                top: 20px;
+                left: 20px;
+                right: 20px;
+
+                height: 40%;
+
+                background: var(--error-color);
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            #parse("views/menu.vm")
+        </div>
+    </body>
+</html>

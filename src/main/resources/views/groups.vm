@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Groups Manager</title>
+        <style>
+            body {
+                margin: 0;
+                font-family: 'Roboto', sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            #parse("views/menu.vm")
+        </div>
+    </body>
+</html>
