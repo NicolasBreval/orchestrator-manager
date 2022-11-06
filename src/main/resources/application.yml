@@ -1,6 +1,8 @@
 micronaut:
+  server:
+    port: ${O2_HTTP_SERVER_PORT:8080}
   application:
-    name: orchestratorManager
+    name: test-server
   router:
     static-resources:
       swagger:
@@ -9,35 +11,113 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
-      redoc:
-        paths: classpath:META-INF/swagger/views/redoc
-        mapping: /redoc/**
-      rapidoc:
-        paths: classpath:META-INF/swagger/views/rapidoc
-        mapping: /rapidoc/**
+      static:
+        paths: classpath:static
+        mapping: /static/**
+  security:
+    authentication: ${O2_SECURITY_AUTHENTICATION:idtoken} # cookie or idtoken
+    redirect:
+      login-failure: /login/auth
+      unauthorized:
+        enabled: true
+        url: /login/auth
+    intercept-url-map:
+        -
+          pattern: /static/**
+          http-method: GET
+          access:
+            - isAnonymous()
+#    redirect:
+#      login-failure: /oauth/login/micronaut
+#      logout: /oauth/login/micronaut
+#      unauthorized:
+#        enabled: true
+#        url: /oauth/login/micronaut
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator: # <3>
+              secret: '"${JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}"'
+              jws-algorithm: HS256
+#        generator:
+#          refresh-token:
+#            secret: ${O2_JWT_GENERATOR_SIGNATURE_SECRET:pleaseChangeThisSecretForANewOne}
+#          access-token.expiration: ${O2_JWT_EXPIRATION_SECS:3600}
+#    oauth2:
+#      clients:
+#        orchestrator:
+#          client-id: ${O2_SECURITY_OAUTH2_CLIENT_ID}
+#          client-secret: ${O2_SECURITY_OAUTH2_CLIENT_SECRET}
+#          openid:
+#            vendor: keycloak-19
+#            issuer: ${O2_SECURITY_OAUTH2_ISSUER}
+#            end-session:
+#              enabled: true
+#          authorization:
+#            url: ${O2_SECURITY_OAUTH2_AUTHORIZATION_URL}
+#            token:
+#              url: ${O2_SECURITY_OAUTH2_TOKEN_URL}
+#              auth-method: client-secret-post
+#      login-uri: /oauth/login/orchestrator
+  jms:
+    activemq:
+      classic:
+        enabled: ${O2_MQ_ACTIVE_ENABLED:false}
+        connection-string: ${O2_MQ_CONN_STRING:}
+        username: ${O2_MQ_USERNAME}
+        password: ${O2_MQ_PASSWORD}
 datasources:
   default:
-    url: ${O2_DATASOURCE_URL}
-    username: ${O2_DATASOURCE_USER}
-    password: ${O2_DATASOURCE_PASS}
-    driverClassName: ${O2_DATASOURCE_DRIVER_NAME}
-    dialect: ${O2_DATASOURCE_DIALECT}
+    url: jdbc:h2:file:./database.sql
+    username: sa
+    password: ''
+    driverClassName: org.h2.Driver
+    dialect: H2
+#    url: 'jdbc:postgresql://localhost/postgres'
+#    driverClassName: 'org.postgresql.Driver'
+#    username: postgres
+#    password: password
+#    dialect: POSTGRES
 jpa:
   default:
     properties:
       hibernate:
         hbm2ddl:
           auto: none
-        show_sql: ${O2_SHOW_SQL:false}
+        show_sql: true
 netty:
   default:
     allocator:
       max-order: 3
 flyway:
-  enabled: ${O2_FLYWAY_ENABLED:true}
+  enabled: true
   datasources:
     default:
       enabled: true
       baseline-on-migrate: true
       locations:
-        - classpath:db/migration/postgres
+        - classpath:db/migration/h2
+rabbitmq:
+  enabled: ${O2_MQ_RABBIT_ENABLED:false}
+  uri: ${O2_MQ_CONN_STRING:}
+  username: ${O2_MQ_USERNAME:}
+  password: ${O2_MQ_PASSWORD:}
+grpc:
+  client:
+    plaintext: ${O2_GRPC_CLIENT_PLAIN_TEXT:true}
+    max-retry-attempts: ${O2_GRPC_CLIENT_MAX_RETRY_ATTEMPTS:5}
+logger.levels.root: ${O2_LOGGER_LEVEL:INFO}
+orchestrator:
+  mq:
+    manager:
+      queue: ${O2_MQ_MANAGER_QUEUE:manager}
+      max-worker-disconnected-time: ${O2_MQ_MAX_WORKER_DISCONNECTED:10000}
+  manager:
+      balancer:
+        type: ${O2_BALANCER_TYPE}
+        worker-waiting-time: ${O2_BALANCER_WORKER_WAITING_TIME:5m}
+  security:
+    basic-users-file: ${O2_SECURITY_BASIC_USERS_FILE:users.json}
+  exception:
+    show-trace: ${O2_EXCEPTION_SHOW_TRACE:false}
